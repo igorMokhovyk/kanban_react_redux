@@ -3,8 +3,6 @@ import {connect} from 'react-redux';
 import Cards from "./Cards";
 
 function Columns(props) {
-
-
     return (
         <div className='col-4 col-sm Column rounded-lg shadow-lg' style={{border: '1px solid'}}>
             <h3 className='Column-text'>
@@ -17,11 +15,9 @@ function Columns(props) {
     )
 }
 
-
 const mapStateToProps = (state) => ({
     cards: state.cards,
     columns: state.column
 })
-
 
 export default connect(mapStateToProps)(Columns);

@@ -13,12 +13,9 @@ function AddColumnButton(props) {
         props.addColumn(newTitle);
         toggle();
     }
-
-
     return (
         <div>
             <Button onClick={toggle}>Add Column</Button>
-
             {addButtonToggleMode &&
             <Modal isOpen={toggle}>
                 <ModalHeader>
@@ -34,7 +31,6 @@ function AddColumnButton(props) {
                 </ModalFooter>
             </Modal>
             }
-
         </div>
     )
 }
