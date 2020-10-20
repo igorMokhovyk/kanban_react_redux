@@ -10,7 +10,8 @@ function Columns(props) {
             </h3>
             {props.cards.filter(el => el.status === props.column.status)
                 .sort((a, b) => b.priority - a.priority)
-                .map(el => <Cards card={el}/>)}
+                .map(el => <Cards card={el} column={props.column}
+                />)}
         </div>
     )
 }

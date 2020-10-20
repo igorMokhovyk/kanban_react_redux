@@ -96,25 +96,46 @@ const kanban = (state = initialState, action) => {
             return {...state, cards: cardEditing}
 
         case 'PRIORITY_CHANGE' :
-            const priorUpdateUp = state.cards.map(el => {
-                if (el.id === action.payload.id) {
-                    el.priority = state.priority[state.priority.indexOf(el.priority)
-                    + action.payload.value];
-
+            const priorUpdate = state.cards.map(el => {
+                if (action.payload.diraction === 'UP') {
+                    if (el.id === action.payload.id) {
+                        el.priority = state.priority[state.priority.indexOf(el.priority)
+                        + action.payload.value];
+                    }
+                }
+                if (action.payload.diraction === 'DOWN') {
+                    if (el.id === action.payload.id) {
+                        el.priority = state.priority[state.priority.indexOf(el.priority)
+                        - action.payload.value];
+                    }
                 }
                 return el;
             })
-            return {...state, cards: priorUpdateUp}
+            return {...state, cards: priorUpdate}
 
-        case 'PRIORITY_DOWN' :
-            const priorUpdateDown = state.cards.map(el => {
-                if (el.id === action.payload.id) {
-                    el.priority = state.priority[state.priority.indexOf(el.priority)
-                    - action.payload.value];
+
+        case 'STATUS_CHANGE' :
+            const statusChange = state.cards.map(el => {
+                if (action.payload.diraction === 'LEFT') {
+                    if (el.id === action.payload.id) {
+                        const colStatuses = state.column.map(el => el.status);
+                        return {...el, status: colStatuses[colStatuses.indexOf(el.status) - 1]}
+                    }
+                    return el
                 }
-                return el;
+
+                if (action.payload.diraction === 'RIGHT') {
+                    if (el.id === action.payload.id) {
+                        const colStatuses = state.column.map(el => el.status);
+                        return {...el, status: colStatuses[colStatuses.indexOf(el.status) + 1]}
+                    }
+                    return el
+                }
             })
-            return {...state, cards: priorUpdateDown}
+            return {
+                ...state,
+                cards: statusChange
+            }
 
         default:
             return state

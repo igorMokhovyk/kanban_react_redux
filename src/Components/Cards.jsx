@@ -1,14 +1,20 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
-import {Button, Label, Input, ModalFooter, ModalBody, ModalHeader, Modal} from "reactstrap";
+import {
+    Button, CardBody, Card, Label, CardFooter, CardHeader,
+    Input, ModalFooter, ModalBody, ModalHeader, Modal
+} from "reactstrap";
+import DeleteButton from "./DeleteButton";
+
 
 function Cards(props) {
+    const deleteToggle = () => setDeleteModalMode(!deleteModalMode)
     const toggle = () => setEditMode(!editMode)
     const [editMode, setEditMode] = useState(false)
     const [nameChange, setNameChange] = useState(props.card.name)
     const [statusChange, setStatusChange] = useState(props.card.status)
     const [priorityChange, setPriorityChange] = useState(props.card.priority)
-
+    const [deleteModalMode, setDeleteModalMode] = useState(false)
     const editedCard = {
         id: Math.random(), name: nameChange,
         status: statusChange, priority: priorityChange
@@ -18,25 +24,46 @@ function Cards(props) {
         toggle()
     }
 
+    console.log(props.columns[props.columns.length - 1].status)
 
     return (
         <div className='card text-white bg-warning mb-3 shadow-sm'>
-            <div className='card-body'>
-                <h6>{props.card.name}</h6>
-                <h7>{props.card.priority}</h7>
-                <div>
-                    <Button>Left</Button>
-                    <Button>Write</Button>
-                </div>
+            <Card body inverse color="warning">
+                <CardBody>
+                    <h6 className='H'>{props.card.name}</h6>
+                    <h7 className='H'>{props.card.priority}</h7>
+                </CardBody>
+                <CardFooter>
+                    <Button disabled={props.card.status === 'todo'}
+                            onClick={() => props.statusChange(props.card.id, "LEFT")}>Left</Button>
+                    {'  '}
+                    <Button disabled={props.card.status === props.columns[props.columns.length - 1].status}
+                            onClick={() => props.statusChange(props.card.id, "RIGHT")}>Right</Button>
+                </CardFooter>
                 <div>
                     <Button disabled={props.card.priority === props.priority[props.priority.length - 1]}
-                            onClick={() => props.priorityChangeUp(props.card.id, 1)}>P.UP</Button>
+                            onClick={() => props.priorityChange(props.card.id, 1, 'UP')}>P.UP</Button>
+                    {'  '}
                     <Button disabled={props.card.priority === props.priority[0]}
-                            onClick={() => props.priorityChangeDown(props.card.id, 1)}>P>DOWN</Button>
+                            onClick={() => props.priorityChange(props.card.id, 1, 'DOWN')}>P>DOWN</Button>
                 </div>
-                <div>
-                    <Button onClick={toggle}>Edit</Button>
 
+                <div>
+                    <CardHeader>
+                        <Button onClick={toggle}>Edit</Button>
+                        <Button onClick={deleteToggle}>Delete</Button>
+                        {deleteModalMode &&
+                        <Modal isOpen={deleteToggle}>
+                            <ModalHeader>
+                                <Label>Are you sure to Delete card?</Label>
+                            </ModalHeader>
+                            <ModalFooter>
+                                <Button onClick={() => props.deleteCard(props.card.id)}>Confirm</Button>
+                                <Button onClick={deleteToggle}>Cancel</Button>
+                            </ModalFooter>
+                        </Modal>
+                        }
+                    </CardHeader>
                     {editMode &&
                     <Modal isOpen={toggle}>
                         <ModalHeader>
@@ -64,7 +91,7 @@ function Cards(props) {
                     </Modal>
                     }
                 </div>
-            </div>
+            </Card>
         </div>
     )
 }
@@ -76,9 +103,11 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    editCard: (id, editedCard) => dispatch({type: 'EDIT_CARD', payload: {id: id, editedCard: editedCard}}),
-    priorityChangeUp: (id, value) => dispatch({type: 'PRIORITY_CHANGE', payload: {id: id, value: value}}),
-    priorityChangeDown: (id, value) => dispatch({type: 'PRIORITY_DOWN', payload: {id: id, value: value}})
+    editCard: (id, editedCard) => dispatch({type: 'EDIT_CARD', payload: {id, editedCard}}),
+    priorityChange: (id, value, diraction) => dispatch({type: 'PRIORITY_CHANGE', payload: {id, value, diraction}}),
+    statusChange: (id, diraction) => dispatch({type: 'STATUS_CHANGE', payload: {id, diraction}}),
+    deleteCard: (id) => dispatch({type: 'DELETE_CARD', payload: id})
+
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cards);
