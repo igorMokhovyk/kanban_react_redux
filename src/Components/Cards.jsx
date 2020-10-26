@@ -5,6 +5,7 @@ import {
     Input, ModalFooter, ModalBody, ModalHeader, Modal
 } from "reactstrap";
 import DeleteButton from "./DeleteButton";
+import {cardDeleteById} from "../redux/actions";
 
 
 function Cards(props) {
@@ -24,7 +25,8 @@ function Cards(props) {
         toggle()
     }
 
-    console.log(props.columns[props.columns.length - 1].status)
+
+   // console.log(props.columns[props.columns.length - 1].status)
 
     return (
         <div className='card text-white bg-warning mb-3 shadow-sm'>
@@ -37,7 +39,7 @@ function Cards(props) {
                     <Button disabled={props.card.status === 'todo'}
                             onClick={() => props.statusChange(props.card.id, "LEFT")}>Left</Button>
                     {'  '}
-                    <Button disabled={props.card.status === props.columns[props.columns.length - 1].status}
+                    <Button disabled={props.card.status === props.column[props.column.length - 1].status}
                             onClick={() => props.statusChange(props.card.id, "RIGHT")}>Right</Button>
                 </CardFooter>
                 <div>
@@ -106,7 +108,7 @@ const mapDispatchToProps = (dispatch) => ({
     editCard: (id, editedCard) => dispatch({type: 'EDIT_CARD', payload: {id, editedCard}}),
     priorityChange: (id, value, diraction) => dispatch({type: 'PRIORITY_CHANGE', payload: {id, value, diraction}}),
     statusChange: (id, diraction) => dispatch({type: 'STATUS_CHANGE', payload: {id, diraction}}),
-    deleteCard: (id) => dispatch({type: 'DELETE_CARD', payload: id})
+    deleteCard: (id) => dispatch(cardDeleteById(id))
 
 })
 

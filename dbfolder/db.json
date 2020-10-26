@@ -1,0 +1,71 @@
+{
+  "todos": [
+    {
+      "id": "1",
+      "name": "First Task",
+      "status": "todo",
+      "priority": 4
+    },
+    {
+      "id": "2",
+      "name": "Second Task",
+      "status": "progress",
+      "priority": 6
+    },
+    {
+      "id": 3,
+      "name": "Third Task",
+      "status": "review",
+      "priority": 5
+    },
+    {
+      "id": 4,
+      "name": "Fifth Task",
+      "status": "review",
+      "priority": 8
+    },
+    {
+      "id": 5,
+      "name": "Six Task",
+      "status": "done",
+      "priority": 10
+    },
+    {
+      "name": "Now",
+      "status": "review",
+      "priority": "4",
+      "id": 6
+    }
+  ],
+  "trash": [
+    {
+      "id": 32,
+      "name": "Ended task",
+      "status": "todo",
+      "priority": 4
+    }
+  ],
+  "columns": [
+    {
+      "id": 1,
+      "title": "To do",
+      "status": "todo"
+    },
+    {
+      "id": 2,
+      "title": "Progress",
+      "status": "progress"
+    },
+    {
+      "id": 3,
+      "title": "Review",
+      "status": "review"
+    },
+    {
+      "id": 4,
+      "title": "Done",
+      "status": "done"
+    }
+  ],
+  "priority": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+}

@@ -1,23 +1,23 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Button, Modal, ModalHeader, ModalFooter, ModalBody, Input, Label} from "reactstrap";
+import {createColumn} from "../redux/actions";
 
 
 function AddColumnButton(props) {
-    const toggle = () => setAddButtonToggleMode(!addButtonToggleMode)
-    const [addButtonToggleMode, setAddButtonToggleMode] = useState(false);
+
     const [titleInput, setTitleInput] = useState('')
-    const titleToLowerCase = titleInput.toLowerCase()
-    const newTitle = {id: Math.random(), title: titleInput, status: titleToLowerCase}
+    const newColumn = {title: titleInput, status: titleInput.toLowerCase()}
     const addButtonHandler = () => {
-        props.addColumn(newTitle);
-        toggle();
+        props.createColumn(newColumn);
+        props.toggleAddColumn();
     }
     return (
+
         <div>
-            <Button onClick={toggle}>Add Column</Button>
-            {addButtonToggleMode &&
-            <Modal isOpen={toggle}>
+            {/*<Button onClick={toggleAddColumn}>Add Column</Button>*/}
+            {props.addButtonToggleMode &&
+            <Modal isOpen={props.toggleAddColumn}>
                 <ModalHeader>
                     <Label>Create new Column:</Label>
                 </ModalHeader>
@@ -27,7 +27,7 @@ function AddColumnButton(props) {
                 </ModalBody>
                 <ModalFooter>
                     <Button onClick={addButtonHandler}>Create</Button>
-                    <Button onClick={toggle}>Cancel</Button>
+                    <Button onClick={props.toggleAddColumn}>Cancel</Button>
                 </ModalFooter>
             </Modal>
             }
@@ -40,7 +40,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    addColumn: (newTitle) => dispatch({type: 'ADD_COLUMN', payload: newTitle}),
+    createColumn: (newColumn) => dispatch(createColumn(newColumn)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddColumnButton);

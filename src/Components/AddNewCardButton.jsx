@@ -2,29 +2,41 @@ import React, {useState} from 'react';
 
 import {connect} from 'react-redux';
 import {Button, Input, Label, ModalFooter, ModalBody, ModalHeader, Modal} from "reactstrap";
+import {addCard} from "../redux/actions";
 
 
 function AddNewCardButton(props) {
-    const toggle = () => setToggleMode(!toggleMode);
-    const [toggleMode, setToggleMode] = useState(false)
+
+
     const [nameInput, setNameInput] = useState('')
     const [priorityInput, setPriorityInput] = useState('')
     const [statusInput, setStatusInput] = useState('')
 
 
-    const cardAdder = {id: Math.random(), name: nameInput, status: statusInput, priority: priorityInput}
+    // const cardAdder = {name: nameInput, status: statusInput, priority: priorityInput}
 
-    const cardAddHandler = () => {
-        props.addCard(cardAdder);
-        toggle()
+    // const cardAddHandler = () => {
+    //     props.addCard(cardAdder);
+    //     toggleNewCard()
+    // }
+
+    const addCardButton = () => {
+        const newCard = {
+            name: nameInput,
+            status: statusInput,
+            priority: priorityInput
+        }
+        props.addCard(newCard)
+        props.toggleNewCard()
     }
+
 
 
     return (
         <div>
-            <Button onClick={toggle}>Add New Card</Button>
-            {toggleMode &&
-            <Modal isOpen={toggleMode}>
+            {/*<Button onClick={toggleNewCard}>Add New Card</Button>*/}
+            {props.toggleMode &&
+            <Modal isOpen={props.toggleMode}>
                 <ModalHeader>
                     <Label>Create Card here:</Label>
                 </ModalHeader>
@@ -42,8 +54,8 @@ function AddNewCardButton(props) {
                     </Input>
                 </ModalBody>
                 <ModalFooter>
-                    <Button onClick={cardAddHandler}>Create</Button>
-                    <Button onClick={toggle}>Cancel</Button>
+                    <Button onClick={addCardButton}>Create</Button>
+                    <Button onClick={props.toggleNewCard}>Cancel</Button>
                 </ModalFooter>
             </Modal>
             }
@@ -53,11 +65,11 @@ function AddNewCardButton(props) {
 
 const mapStateToProps = (state) => ({
     cards: state.cards,
-    columns: state.column
+    columns: state.columns
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    addCard: (cardAdder) => dispatch({type: 'ADD_CARD', payload: cardAdder}),
+    addCard: (card) => dispatch(addCard(card)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddNewCardButton);
